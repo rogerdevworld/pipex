@@ -1,51 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rmarrero <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/26 13:12:27 by rmarrero          #+#    #+#             */
-/*   Updated: 2024/11/26 16:32:59 by rmarrero         ###   ########.fr       */
+/*   Created: 2024/09/12 18:01:25 by rmarrero          #+#    #+#             */
+/*   Updated: 2024/11/23 13:34:26 by rmarrero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#ifndef	PIPEX_H
-# define PIPEX_H
-
-/* libs  */
-#include <stdio.h>
-#include <unistd.h>
-#include <errno.h>
-#include <stdlib.h>
-# include <stdarg.h>
-# include <stdint.h>
-
-
-/* functions */
-
-/* funciones para menejo de errores */
-void	ft_print_error();
-int	comand_no_found(char **argv, char **envp);
-int	ft_first_file(char **argv);
-int	num_of_param(int argc);
-int	ft_error(int argc, char **argv, char **envp);
-
-/* funciones para  */
-char	*ft_find_command(char *path, char *command);
-char *ft_getenv(char *name, char **envp);
-
-/* ft_printf */
-int ft_validation(char c);
-int		ft_printf(const char *str, ...);
-void	is_flag(char c, va_list args, int *length, int *flag);
-void	ft_unsigned_putnbr(unsigned int unsigned_nbr, int *length, int *flag);
-void	ft_putchar(const char c, int *length, int *flag);
-void	ft_putstr(char *args, int *length, int *flag);
-void	ft_putnbr(int nbr, int *length, int *flag);
-void	ft_pointer(size_t pointer, int *length, int *flag);
-void	ft_hex(unsigned int nbr, int *length, char x, int *flag);
-
-/* libft */
+#ifndef LIBFT_H
+# define LIBFT_H
 # include <stddef.h>
 # include <unistd.h>
 # include <stdio.h>
