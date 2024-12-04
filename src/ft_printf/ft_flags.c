@@ -9,7 +9,7 @@
 /*   Updated: 2024/10/23 18:47:55 by rmarrero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../include/ft_printf.h"
+#include "../include/pipex.h"
 
 /* %char hunter */
 void	is_flag(char c, va_list args, int *length, int *flag)

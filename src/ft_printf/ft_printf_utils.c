@@ -9,7 +9,7 @@
 /*   Updated: 2024/10/23 19:19:54 by rmarrero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../include/ft_printf.h"
+#include "../include/pipex.h"
 
 /* %c Prints a single character. */
 void	ft_putchar(char character, int *length, int *flag)

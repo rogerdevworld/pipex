@@ -15,6 +15,7 @@ SRC = ./src/
 OBJS = $(wildcard $(SRC)*.c)
 PRINTF = $(wildcard $(SRC)ft_printf/src/*.c)
 LIBFT = $(wildcard $(SRC)libft/*.c)
+GET = $(wildcard $(SRC)libft/*.c)
 HEADER = pipex.h
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
@@ -30,7 +31,7 @@ RESET   = \033[0m
 #Reglas
 all: $(NAME)
 #@echo "$(BLUE)Compilando el proyecto...$(RESET)"
-$(NAME): $(LIBFT) $(OBJS)  $(PRINTF)
+$(NAME): $(LIBFT) $(OBJS)  $(PRINTF) $(GET)
 	$(CC) -o $(NAME) $?
 
 clean:

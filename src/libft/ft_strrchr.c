@@ -28,13 +28,3 @@ char	*ft_strrchr(const char *str, char c)
 	}
 	return (NULL);
 }
-/*
-int main()
-{
-    char str[] = "www.holamundo.com";
-    char c = '.';
-
-    printf("%s", ft_strrchr(str,c));
-
-    return 0;
-}*/
