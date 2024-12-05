@@ -9,7 +9,7 @@
 /*   Updated: 2024/10/12 23:10:36 by rmarrero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "./get_next_line.h"
+#include "get_next_line.h"
 
 t_list	*get_last_node(t_list *list)
 {

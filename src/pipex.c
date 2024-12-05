@@ -179,31 +179,206 @@ void	do_pipe(char *cmd, char **env)
 	}
 }
 
-int	main(int ac, char **av, char **env)
+int	main(int argc, char **argv, char **env)
 {
 	int		i;
 	int		fd_in;
 	int		fd_out;
 
-	if (ac < 5)
+	if (argc < 5)
 		exit_handler(1);
-	if (ft_strcmp(av[1], "here_doc") == 0)
+	if (ft_strcmp(argv[1], "here_doc") == 0)
 	{
-		if (ac < 6)
+		if (argc < 6)
 			exit_handler(1);
 		i = 3;
-		fd_out = open_file(av[ac - 1], 2);
-		here_doc(av);
+		fd_out = open_file(argv[argc - 1], 2);
+		here_doc(argv);
 	}
 	else
 	{
 		i = 2;
-		fd_in = open_file(av[1], 0);
-		fd_out = open_file(av[ac - 1], 1);
+		fd_in = open_file(argv[1], 0);
+		fd_out = open_file(argv[argc - 1], 1);
 		dup2(fd_in, 0);
 	}
-	while (i < ac - 2)
-		do_pipe(av[i++], env);
+	while (i < argc - 2)
+		do_pipe(argv[i++], env);
 	dup2(fd_out, 1);
-	exec(av[ac - 2], env);
+	exec(argv[argc - 2], env);
 }
+
+/* get_next_line */
+t_list	*get_last_node(t_list *list)
+{
+	if (!list)
+		return (NULL);
+	while (list->next)
+		list = list->next;
+	return (list);
+}
+
+int	get_len(t_list *list)
+{
+	int	i;
+	int	len;
+
+	if (!list)
+		return (0);
+	len = 0;
+	while (list)
+	{
+		i = 0;
+		while (list->content[i])
+		{
+			if (list->content[i] == '\n')
+				return (++len);
+			++i;
+			++len;
+		}
+		list = list->next;
+	}
+	return (len);
+}
+
+void	get_copy(t_list *list, char *line)
+{
+	int	i;
+	int	j;
+
+	if (!list)
+		return ;
+	j = 0;
+	while (list)
+	{
+		i = 0;
+		while (list->content[i])
+		{
+			if (list->content[i] == '\n')
+			{
+				line[j++] = '\n';
+				line[j] = '\0';
+				return ;
+			}
+			line[j++] = list->content[i++];
+		}
+		list = list->next;
+	}
+	line[j] = '\0';
+}
+
+int	find_new_line(t_list *list)
+{
+	int	i;
+
+	if (!list)
+		return (0);
+	while (list)
+	{
+		i = 0;
+		while (list->content[i] && i < BUFFER_SIZE)
+		{
+			if (list->content[i] == '\n')
+				return (1);
+			i++;
+		}
+		list = list->next;
+	}
+	return (0);
+}
+
+void	create_and_append(t_list **list, int fd)
+{
+	t_list	*new_node;
+	t_list	*last_node;
+	char	*buffer;
+	int		bytes_read;
+
+	while (!find_new_line(list[fd]))
+	{
+		buffer = malloc(BUFFER_SIZE + 1);
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		if (!(buffer) || bytes_read <= 0)
+			return (free(buffer), (void)0);
+		buffer[bytes_read] = '\0';
+		new_node = malloc(sizeof(t_list));
+		if (!new_node)
+			return ;
+		new_node->content = buffer;
+		new_node->next = NULL;
+		if (!list[fd])
+			list[fd] = new_node;
+		else
+		{
+			last_node = get_last_node(list[fd]);
+			last_node->next = new_node;
+		}
+	}
+}
+
+char	*get_next_line(int fd)
+{
+	static t_list	*list[4096];
+	char			*line;
+
+	line = NULL;
+	if (BUFFER_SIZE < 0 || fd < 0)
+		return (NULL);
+	create_and_append(list, fd);
+	line = malloc(get_len(list[fd]) + 1);
+	if (!(list[fd]) || !(line))
+		return (free(line), NULL);
+	get_copy(list[fd], line);
+	get_clear_remaining_data(&list[fd]);
+	return (line);
+}
+
+void	get_free_list(t_list **list, t_list *replace, char *buffer)
+{
+	t_list	*tmp;
+
+	if (NULL == *list)
+		return ;
+	while (*list)
+	{
+		tmp = (*list)->next;
+		free((*list)->content);
+		free(*list);
+		*list = tmp;
+	}
+	*list = NULL;
+	if (replace->content[0])
+		*list = replace;
+	else
+	{
+		free(buffer);
+		free(replace);
+	}
+}
+
+void	get_clear_remaining_data(t_list **list)
+{
+	char	*buffer;
+	t_list	*last;
+	t_list	*replace;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	buffer = malloc(BUFFER_SIZE + 1);
+	replace = malloc(sizeof(t_list));
+	if (!(buffer) || !(replace))
+		return ;
+	last = get_last_node(*list);
+	while (last->content[i] && last->content[i] != '\n')
+		++i;
+	while (last->content[i] && last->content[++i])
+		buffer[j++] = last->content[i];
+	buffer[j] = '\0';
+	replace->content = buffer;
+	replace->next = NULL;
+	get_free_list(list, replace, buffer);
+}
+//comand > 
+//gcc -o get_next_line main.c get_next_line.c get_next_line_utils.c -I./includes

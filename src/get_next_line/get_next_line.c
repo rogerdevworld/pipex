@@ -9,7 +9,7 @@
 /*   Updated: 2024/10/28 20:58:15 by rmarrero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "./get_next_line.h"
+#include "get_next_line.h"
 
 char	*get_next_line(int fd)
 {
