@@ -1,167 +1,198 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: decortejohn <decortejohn@student.42.fr>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/30 14:09:15 by jdecorte          #+#    #+#             */
-/*   Updated: 2022/02/12 10:54:24 by decortejohn      ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../include/pipex.h"
 
+// Función para abrir archivos
 int open_file(char *file, int in_or_out)
 {
-    int ret;
+    int fd;
+
     if (in_or_out == 0)
-        ret = open(file, O_RDONLY);
-    else if (in_or_out == 1)
-        ret = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-    
-    if (ret == -1) {
-        perror("Error");
-        exit(1);
+        fd = open(file, O_RDONLY);
+    else
+        fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+    if (fd == -1)
+    {
+        perror(file);
+        exit(EXIT_FAILURE);
     }
-    return ret;
+    return (fd);
 }
 
-void	ft_free_tab(char **tab)
+// Manejo de listas de comandos
+t_cmd *create_cmd(char *cmd)
 {
-	size_t	i;
-
-	i = 0;
-	while (tab[i])
-	{
-		free(tab[i]);
-		i++;
-	}
-	free(tab);
+    t_cmd *new_cmd = malloc(sizeof(t_cmd));
+    if (!new_cmd)
+        return NULL;
+    new_cmd->cmd = ft_strdup(cmd);
+    new_cmd->next = NULL;
+    return new_cmd;
 }
 
-char	*my_getenv(char *name, char **env)
+// Función para obtener el valor de una variable de entorno
+char *my_getenv(char *name, char **env)
 {
-	int		i;
-	int		j;
-	char	*sub;
-
-	i = 0;
-	while (env[i])
-	{
-		j = 0;
-		while (env[i][j] && env[i][j] != '=')
-			j++;
-		sub = ft_substr(env[i], 0, j);
-		if (ft_strcmp(sub, name) == 0)
-		{
-			free(sub);
-			return (env[i] + j + 1);
-		}
-		free(sub);
-		i++;
-	}
-	return (NULL);
+    int i = 0;
+    while (env[i])
+    {
+        if (ft_strncmp(env[i], name, ft_strlen(name)) == 0 && env[i][ft_strlen(name)] == '=')
+            return env[i] + ft_strlen(name) + 1;
+        i++;
+    }
+    return NULL;
 }
 
-char	*get_path(char *cmd, char **env)
+void add_cmd(t_cmd **cmd_list, t_cmd *new_cmd)
 {
-	int		i;
-	char	*exec;
-	char	**allpath;
-	char	*path_part;
-	char	**s_cmd;
-
-	i = -1;
-	allpath = ft_split(my_getenv("PATH", env), ':');
-	s_cmd = ft_split(cmd, ' ');
-	while (allpath[++i])
-	{
-		path_part = ft_strjoin(allpath[i], "/");
-		exec = ft_strjoin(path_part, s_cmd[0]);
-		free(path_part);
-		if (access(exec, F_OK | X_OK) == 0)
-		{
-			ft_free_tab(s_cmd);
-			return (exec);
-		}
-		free(exec);
-	}
-	ft_free_tab(allpath);
-	ft_free_tab(s_cmd);
-	return (cmd);
+    if (!*cmd_list)
+        *cmd_list = new_cmd;
+    else
+    {
+        t_cmd *temp = *cmd_list;
+        while (temp->next)
+            temp = temp->next;
+        temp->next = new_cmd;
+    }
 }
 
-void	exec(char *cmd, char **env)
+void free_cmds(t_cmd *cmd_list)
 {
-	char	**s_cmd;
-	char	*path;
+    t_cmd *temp;
 
-	s_cmd = ft_split(cmd, ' ');
-	path = get_path(s_cmd[0], env);
-	if (execve(path, s_cmd, env) == -1)
-	{
-		ft_putstr_fd("command not found: ", 2);
-		ft_putendl_fd(s_cmd[0], 2);
-		ft_free_tab(s_cmd);
-		exit(0);
-	}
+    while (cmd_list)
+    {
+        temp = cmd_list;
+        cmd_list = cmd_list->next;
+        free(temp->cmd);
+        free(temp);
+    }
 }
 
-void	child(char **av, int *p_fd, char **env)
+// Función para ejecutar un comando
+void exec_cmd(char *cmd, t_pipex *pipex)
 {
-	int		fd;
+    char **args = ft_split(cmd, ' ');
+    char *path = get_path(args[0], pipex->env);
 
-	fd = open_file(av[1], 0);
-	dup2(fd, 0);
-	dup2(p_fd[1], 1);
-	close(p_fd[0]);
-	exec(av[2], env);
+    if (execve(path, args, pipex->env) == -1)
+    {
+        perror("Command execution failed");
+        ft_free_tab(args);
+        free(path);
+        exit(EXIT_FAILURE);
+    }
 }
 
-void	parent(char **av, int *p_fd, char **env)
+// Resolver el path del comando
+char *get_path(char *cmd, char **env)
 {
-	int		fd;
+    char *path_env = my_getenv("PATH", env);
+    if (!path_env)
+        return NULL;
 
-	fd = open_file(av[4], 1);
-	dup2(fd, 1);
-	dup2(p_fd[0], 0);
-	close(p_fd[1]);
-	exec(av[3], env);
+    char **paths = ft_split(path_env, ':');
+    for (int i = 0; paths[i]; i++)
+    {
+        char *path = ft_strjoin(ft_strjoin(paths[i], "/"), cmd);
+        if (access(path, F_OK | X_OK) == 0)
+        {
+            ft_free_tab(paths);
+            return path;
+        }
+        free(path);
+    }
+    ft_free_tab(paths);
+    return NULL;
 }
 
-int	main(int ac, char **av, char **env)
+void execute_commands(t_pipex *pipex)
 {
-	int		p_fd[2];
-	pid_t	pid;
+    t_cmd *current = pipex->cmds;
+    int pipe_fd[2];
+    int prev_fd = open_file(pipex->input_file, 0);  // Abrir archivo de entrada
 
-	if (ac != 5)
-		ft_error(1, "args != 5");
-	if (pipe(p_fd) == -1)
-		exit(-1);
-	pid = fork();
-	if (pid == -1)
-		exit(-1);
-	if (!pid)
-		child(av, p_fd, env);
-	parent(av, p_fd, env);
+    while (current)
+    {
+        if (current->next)
+        {
+            if (pipe(pipe_fd) == -1)
+                ft_error(1, "Pipe error");
+        }
+        else
+        {
+            // Abrir el archivo de salida solo para el último comando
+            pipe_fd[1] = open_file(pipex->output_file, 1);
+        }
+
+        pid_t pid = fork();
+        if (pid == -1)
+            ft_error(1, "Fork error");
+
+        if (pid == 0) // Proceso hijo
+        {
+            // Redirigir la entrada del archivo al stdin
+            dup2(prev_fd, STDIN_FILENO);
+            // Si no es el último comando, redirigir la salida al pipe
+            if (current->next)
+                dup2(pipe_fd[1], STDOUT_FILENO);
+            else // Último comando, redirigir la salida al archivo
+                dup2(pipe_fd[1], STDOUT_FILENO);
+            
+            close(pipe_fd[0]);
+            exec_cmd(current->cmd, pipex);
+        }
+
+        // Cerrar los descriptores de archivos en el proceso padre
+        close(prev_fd);
+        if (current->next)
+            close(pipe_fd[1]);
+        prev_fd = pipe_fd[0];  // Preparar para la siguiente iteración
+        current = current->next;
+    }
+
+    // Esperar a que todos los procesos hijos terminen
+    while (wait(NULL) > 0);
 }
 
-/* 
-Tipos de errores #n code:
 
--- 0 - Salir sin hacer nada.
--- 1 - manejadores por mi.
--- 2 - menejaos por perror.
-
-*/
-void	ft_error(int type_of_error, char *error_messege)
+// Funciones auxiliares
+void ft_free_tab(char **tab)
 {
-	if (type_of_error == 0)
-		exit(0);
-	else if ( type_of_error == 1)
-	{
-		ft_printf("Error: %s\n", error_messege);
-		exit(1);
-	}
+    size_t i = 0;
+    while (tab[i])
+        free(tab[i++]);
+    free(tab);
+}
+
+// Manejo de errores
+void ft_error(int type_of_error, char *error_message)
+{
+    if (type_of_error == 1)
+    {
+        fprintf(stderr, "Error: %s\n", error_message);
+        exit(EXIT_FAILURE);
+    }
+}
+
+// Función principal
+int main(int argc, char **argv, char **env)
+{
+    if (argc < 5)
+    {
+        ft_error(1, "Usage: ./pipex infile cmd1 cmd2 ... outfile\n");
+        return EXIT_FAILURE;
+    }
+
+    t_pipex pipex;
+    pipex.env = env;
+    pipex.input_file = argv[1];
+    pipex.output_file = argv[argc - 1];
+    pipex.cmds = NULL;
+
+    for (int i = 2; i < argc - 1; i++)
+        add_cmd(&pipex.cmds, create_cmd(argv[i]));
+
+    execute_commands(&pipex);
+    free_cmds(pipex.cmds);
+
+    return EXIT_SUCCESS;
 }

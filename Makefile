@@ -17,7 +17,7 @@ HEADER = include/pipex.h
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
 RM = rm -f
-
+TESTER = tester_pipex.sh
 #color
 RED     = \033[31m
 GREEN   = \033[32m
@@ -26,7 +26,7 @@ BLUE    = \033[34m
 RESET   = \033[0m
 
 ifdef BONUS
-	OBJECTS = $(OBJS) $(BOBJS)
+	OBJECTS = $(BOBJS)
 else
 	OBJECTS = $(OBJS)
 endif
@@ -36,8 +36,8 @@ all: $(NAME)
 
 $(NAME): $(HEADER) Makefile
 	make all -C libft
-	@echo "$(GREEN)Compilando...$(RESET)"
-	$(CC) -o $(NAME) $(OBJECTS)
+	@echo "$(GREEN)Compilando pipex...$(RESET)"
+	$(CC) -o $(NAME) $(OBJECTS) -g
 	@echo "$(BLUE)"
 	@echo "$(YELLOW)           ($(RESET)__$(YELLOW))\           $(RESET)"
 	@echo "$(YELLOW)           ($(RESET)oo$(YELLOW))\\________  $(RESET)"
@@ -50,6 +50,8 @@ $(NAME): $(HEADER) Makefile
 bonus: 
 	@$(MAKE) BONUS=42 --no-print-directory
 
+tester: $(NAME)
+	sh $(TESTER)
 clean:
 	@echo "$(GREEN)eliminado...$(RESET)"
 	$(RM) .o

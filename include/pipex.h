@@ -12,40 +12,53 @@
 #ifndef	PIPEX_H
 # define PIPEX_H
 
-/* libs  */
-# include <stdio.h>
 # include <unistd.h>
-# include <errno.h>
 # include <stdlib.h>
-# include <stdarg.h>
-# include <stdint.h>
-# include <stddef.h>
-# include <string.h>
-# include <limits.h>
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <sys/types.h>
-# include <sys/stat.h>
+# include <stdio.h>
 # include <fcntl.h>
+# include <stdio.h>
+# include <sys/wait.h>
+# include <string.h>
+#include "../libft/libft.h"
 
-/* my funtions of the libs */
-# include "../libft/libft.h"
+// Estructura para una lista de comandos
+typedef struct s_cmd
+{
+    char            *cmd;          // Comando completo
+    struct s_cmd    *next;         // Siguiente comando
+} t_cmd;
 
-# ifndef SIZE_MAX
-#  define SIZE_MAX 4294967295
-# endif
+// Estructura principal del programa
+typedef struct s_pipex
+{
+    char    **env;                 // Variables de entorno
+    char    *input_file;           // Archivo de entrada
+    char    *output_file;          // Archivo de salida
+    t_cmd   *cmds;                 // Lista de comandos
+} t_pipex;
 
-/* functions */
-void	exit_handler(int n_exit);
-int		open_file(char *file, int n);
-char	*ft_path(char *name, char **env);
-char	*get_path(char *cmd, char **env);
-void	exec(char *cmd, char **env);
-void	ft_free_tab(char **tab);
-void	here_doc_put_in(char **av, int *p_fd);
-void	here_doc(char **av);
-void	do_pipe(char *cmd, char **env);
-int	ft_strcmp(char *s1, char *s2);
-void	ft_error(int type_of_error, char *error_messege);
+// Funciones de manejo de archivos
+int     open_file(char *file, int in_or_out);
+
+// Manejo de listas
+t_cmd   *create_cmd(char *cmd);
+void    add_cmd(t_cmd **cmd_list, t_cmd *new_cmd);
+void    free_cmds(t_cmd *cmd_list);
+
+// Funciones auxiliares
+void    ft_free_tab(char **tab);
+char    *my_getenv(char *name, char **env);
+char    *get_path(char *cmd, char **env);
+
+// Ejecución de comandos
+void    exec_cmd(char *cmd, t_pipex *pipex);
+
+// Funciones para manejo de procesos y pipes
+void    child_process(t_pipex *pipex, int *pipe_fd, char *cmd);
+void    parent_process(t_pipex *pipex, int *pipe_fd, char *cmd, int output_fd);
+void    execute_commands(t_pipex *pipex);
+
+// Manejo de errores
+void    ft_error(int type_of_error, char *error_message);
 
 #endif
