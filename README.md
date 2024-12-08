@@ -4,7 +4,7 @@ open, close, read, write, malloc, free, perror, strerror, access, dup, dup2, exe
 
 ---
 
-- int execve(const char *pathname, char *const argv[], char *const envp[]);
+- #####int execve(const char *pathname, char *const argv[], char *const envp[]);
     
     `execve` es una llamada al sistema fundamental en sistemas operativos basados en Unix, como Linux. Es parte de las funciones que permiten reemplazar el contenido de un proceso con el de un nuevo programa, lo que resulta útil en el desarrollo de aplicaciones que necesitan lanzar o ejecutar otros programas.
     
@@ -80,7 +80,7 @@ open, close, read, write, malloc, free, perror, strerror, access, dup, dup2, exe
     
     - `execvp` busca el ejecutable en los directorios listados en `PATH`.
     - `execl` permite pasar los argumentos como una lista en lugar de un arreglo.
-- pid_t fork(void);
+- ##pid_t fork(void);
     
     La función `fork()` en C es una llamada al sistema que se utiliza en sistemas operativos tipo Unix para crear un nuevo proceso. Este nuevo proceso es una copia casi exacta del proceso padre que llamó a `fork()`.
     
