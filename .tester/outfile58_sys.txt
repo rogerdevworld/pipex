@@ -1,0 +1,12 @@
+include
+infile
+libft
+Makefile
+nonexistentoutfile
+out
+outsys
+pipex
+README.md
+src
+tester_pipex_bonus.sh
+tester_pipex.sh
