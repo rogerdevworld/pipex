@@ -4,7 +4,7 @@ open, close, read, write, malloc, free, perror, strerror, access, dup, dup2, exe
 
 ---
 
-- # int execve(const char *pathname, char *const argv[], char *const envp[]);
+- ## int execve(const char *pathname, char *const argv[], char *const envp[]);
     
     `execve` es una llamada al sistema fundamental en sistemas operativos basados en Unix, como Linux. Es parte de las funciones que permiten reemplazar el contenido de un proceso con el de un nuevo programa, lo que resulta útil en el desarrollo de aplicaciones que necesitan lanzar o ejecutar otros programas.
     
@@ -80,7 +80,7 @@ open, close, read, write, malloc, free, perror, strerror, access, dup, dup2, exe
     
     - `execvp` busca el ejecutable en los directorios listados en `PATH`.
     - `execl` permite pasar los argumentos como una lista en lugar de un arreglo.
-- # pid_t fork(void);
+- ## pid_t fork(void);
     
     La función `fork()` en C es una llamada al sistema que se utiliza en sistemas operativos tipo Unix para crear un nuevo proceso. Este nuevo proceso es una copia casi exacta del proceso padre que llamó a `fork()`.
     
@@ -779,8 +779,64 @@ Ahora tenemos que plantear el problema ya teniendo la idea principal de que tene
     	exec(av[ac - 2], env);
     }
     ```
-    
-
-```jsx
-
+___
+## Diagrama del Mandatory
+```
+./pipex infile cmd1 cmd2 outfile
+        |
+      pipe()  // Crea un pipe, que genera dos extremos: end[0] (lectura) y end[1] (escritura)
+        |
+    fork()  // Se crea un proceso hijo para ejecutar cmd1
+        |
+    +--- child (cmd1)  // Proceso hijo ejecutando cmd1
+    |      |
+    |      |-- dup2()    // Redirige la entrada estándar (stdin) al extremo de lectura del pipe (end[0])
+    |      |-- close(end[0])  // Cierra el extremo de lectura del pipe en el proceso hijo
+    |      |-- close(end[1])  // Cierra el extremo de escritura del pipe en el proceso hijo
+    |      |-- execve(cmd1)  // Ejecuta el comando cmd1
+    |
+    +--- parent (cmd2)  // Proceso padre ejecutando cmd2
+           |
+           |-- dup2()    // Redirige la salida estándar (stdout) al extremo de escritura del pipe (end[1])
+           |-- close(end[1])  // Cierra el extremo de escritura del pipe en el proceso padre
+           |-- close(end[0])  // Cierra el extremo de lectura del pipe en el proceso padre
+           |-- execve(cmd2)  // Ejecuta el comando cmd2
+```
+## Diagrama del bonus
+```
+./pipex infile cmd1 cmd2 cmd3 cmd4 outfile
+        |
+    pipe()    // Crea el primer pipe
+        |
+    fork()    // Crea un proceso hijo para cmd1
+        |
+    +--- child (cmd1)  
+    |      |
+    |      |-- dup2()    // Redirige stdin a infile
+    |      |-- dup2()    // Redirige stdout a pipe[1] (escritura del primer pipe)
+    |      |-- close()   // Cierra los extremos innecesarios
+    |      |-- execve(cmd1)
+    |
+    +--- parent  
+           |
+           |-- loop through cmd2, cmd3, cmd4 (each time create a new pipe and fork)
+           |
+           pipe()  // Crea el siguiente pipe
+           |
+        fork()    // Crea un proceso hijo para cmd2, y así sucesivamente
+           |
+        +--- child (cmd2)
+        |      |
+        |      |-- dup2()    // Redirige stdin a pipe[0] (lectura del primer pipe)
+        |      |-- dup2()    // Redirige stdout a pipe[1] (escritura del segundo pipe)
+        |      |-- close()   // Cierra los extremos innecesarios
+        |      |-- execve(cmd2)
+        |
+        +--- parent
+               |
+           repeat for cmd3, cmd4, etc.
+               |
+           final dup2() // Redirige stdout a outfile (para el último comando)
+           close()  // Cierra los extremos de los pipes
+           execve(cmd4)  // Ejecuta el último comando
 ```
