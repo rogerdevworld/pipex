@@ -4,7 +4,7 @@ open, close, read, write, malloc, free, perror, strerror, access, dup, dup2, exe
 
 ---
 
-- ##### int execve(const char *pathname, char *const argv[], char *const envp[]);
+- # int execve(const char *pathname, char *const argv[], char *const envp[]);
     
     `execve` es una llamada al sistema fundamental en sistemas operativos basados en Unix, como Linux. Es parte de las funciones que permiten reemplazar el contenido de un proceso con el de un nuevo programa, lo que resulta útil en el desarrollo de aplicaciones que necesitan lanzar o ejecutar otros programas.
     
@@ -80,7 +80,7 @@ open, close, read, write, malloc, free, perror, strerror, access, dup, dup2, exe
     
     - `execvp` busca el ejecutable en los directorios listados en `PATH`.
     - `execl` permite pasar los argumentos como una lista en lugar de un arreglo.
-- ## pid_t fork(void);
+- # pid_t fork(void);
     
     La función `fork()` en C es una llamada al sistema que se utiliza en sistemas operativos tipo Unix para crear un nuevo proceso. Este nuevo proceso es una copia casi exacta del proceso padre que llamó a `fork()`.
     
@@ -162,7 +162,7 @@ open, close, read, write, malloc, free, perror, strerror, access, dup, dup2, exe
     
     Esta función es clave para construir sistemas multiproceso y se utiliza ampliamente en servidores y aplicaciones concurrentes.
     
-- int pipe(int pipefd[2]);
+- # int pipe(int pipefd[2]);
     
     La función `pipe()` en C se utiliza para crear un canal de comunicación unidireccional entre procesos relacionados (como un proceso padre e hijo). Este canal permite que un proceso escriba datos en un extremo del canal, mientras que el otro proceso puede leer esos datos desde el otro extremo.
     
@@ -271,7 +271,7 @@ open, close, read, write, malloc, free, perror, strerror, access, dup, dup2, exe
     
     Esta función es esencial para la programación de sistemas concurrentes y se utiliza ampliamente junto con `fork()` para implementar patrones de comunicación eficiente entre procesos.
     
-- pid_t waitpid(pid_t pid, int *status, int options);
+- # pid_t waitpid(pid_t pid, int *status, int options);
     
     La función `waitpid()` en C se utiliza para que un proceso padre espere la terminación de un proceso hijo específico. A diferencia de `wait()`, que espera a que cualquier proceso hijo termine, `waitpid()` ofrece más control sobre el proceso hijo que se espera, permitiendo especificar un identificador de proceso (PID) y un conjunto de opciones adicionales.
     
@@ -389,7 +389,7 @@ open, close, read, write, malloc, free, perror, strerror, access, dup, dup2, exe
     
     La función `waitpid()` es muy útil para gestionar múltiples procesos hijos y obtener detalles sobre su terminación, lo que ayuda en la programación de aplicaciones concurrentes y en la gestión de recursos del sistema.
     
-- int access(const char *pathname, int mode);
+- # int access(const char *pathname, int mode);
     
     La función `access()` en C se utiliza para comprobar si un archivo existe y si el proceso tiene permisos para acceder a él de una manera específica (lectura, escritura, ejecución). Es una función útil para verificar la accesibilidad de un archivo antes de realizar operaciones en él, como leerlo o escribir en él.
     
@@ -626,7 +626,7 @@ open, close, read, write, malloc, free, perror, strerror, access, dup, dup2, exe
     
     Ambas funciones son herramientas poderosas para manipular flujos de datos y manejar entrada/salida en programación de sistemas.
     
-- char *strerror(int errnum);
+- # char *strerror(int errnum);
     
     La función `strerror()` en C se utiliza para convertir un código de error numérico (almacenado en `errno`) en una cadena de texto que describe ese error. Es muy útil para proporcionar mensajes de error descriptivos en programas que manejan situaciones donde pueden ocurrir fallos del sistema, como la apertura de archivos, operaciones de entrada/salida, entre otros.
     
