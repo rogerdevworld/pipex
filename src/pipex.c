@@ -178,7 +178,7 @@ int main(int argc, char **argv, char **env)
 {
     if (argc < 5)
     {
-        ft_error(1, "Usage: ./pipex infile cmd1 cmd2 ... outfile\n");
+        ft_error(1, "./pipex infile cmd1 cmd2 ... outfile\n");
         return EXIT_FAILURE;
     }
 

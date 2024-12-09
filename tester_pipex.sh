@@ -462,8 +462,8 @@ else
 fi
 
 echo "\n"
-
 echo "Bonus casos normales 3 comandos"
+echo "\n"
 
 # Prueba 51: Tres comandos con pipe
 $PIPEX infile "ls" "grep test" "cat" .tester/outfile51.txt
@@ -729,12 +729,13 @@ fi
 $PIPEX infile "cat" "grep 'pass'" "tail -n 5" .tester/outfile80.txt
 < infile cat | grep 'pass' | tail -n 5 > .tester/outfile80_sys.txt
 if diff .tester/outfile80.txt .tester/outfile80_sys.txt > /dev/null; then
-    echo -n "${GREEN} 80. [OK]${NC}"
+    echo "${GREEN} 80. [OK]${NC}"
 else
-    echo -n "${RED} 80. [KO]${NC}"
+    echo "${RED} 80. [KO]${NC}"
 fi
 
 echo "Bonus casos normales 4 comandos"
+echo "\n"
 
 # Prueba 81: Cuatro comandos para filtrar, ordenar y contar
 $PIPEX infile "cat" "grep 'pattern'" "sort" "wc -l" .tester/outfile81.txt
@@ -917,6 +918,7 @@ else
 fi
 
 echo "bonus 5 comandos "
+echo "\n"
 # Prueba 101: Filtrar, ordenar, contar y cortar columnas
 $PIPEX infile "cat" "grep 'pattern'" "sort" "cut -d ' ' -f 2" "wc -l" .tester/outfile101.txt
 < infile cat | grep 'pattern' | sort | cut -d ' ' -f 2 | wc -l > .tester/outfile101_sys.txt
@@ -1098,6 +1100,7 @@ else
 fi
 
 echo "bonus mas de 8 comandos"
+echo "\n"
 # Prueba 121: Filtrar, ordenar, cortar, contar y mostrar las primeras líneas
 $PIPEX infile "cat" "grep 'error'" "sort" "cut -d ' ' -f 2" "uniq" "wc -l" "head -n 5" .tester/outfile121.txt
 < infile cat | grep 'error' | sort | cut -d ' ' -f 2 | uniq | wc -l | head -n 5 > .tester/outfile121_sys.txt
@@ -1219,9 +1222,9 @@ fi
 $PIPEX infile "cat" "grep 'debug'" "sort" "cut -d ' ' -f 2" "tail -n 10" "wc -w" "uniq" .tester/outfile134.txt
 < infile cat | grep 'debug' | sort | cut -d ' ' -f 2 | tail -n 10 | wc -w | uniq > .tester/outfile134_sys.txt
 if diff .tester/outfile134.txt .tester/outfile134_sys.txt > /dev/null; then
-    echo -n "${GREEN} 134. [OK]${NC}"
+    echo "${GREEN} 134. [OK]${NC}"
 else
-    echo -n "${RED} 134. [KO]${NC}"
+    echo "${RED} 134. [KO]${NC}"
 fi
 
 # Prueba 135: Buscar, ordenar, mostrar las últimas líneas y contar
