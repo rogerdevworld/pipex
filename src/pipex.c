@@ -106,10 +106,13 @@ char *get_path(char *cmd, char **env)
 
 void execute_commands(t_pipex *pipex)
 {
-    t_cmd *current = pipex->cmds;
+    t_cmd *current;
+    pid_t pid;
     int pipe_fd[2];
-    int prev_fd = open_file(pipex->input_file, 0);  // Abrir archivo de entrada
+    int prev_fd;
 
+    current = pipex->cmds;
+    prev_fd = open_file(pipex->input_file, 0);
     while (current)
     {
         if (current->next)
@@ -118,38 +121,23 @@ void execute_commands(t_pipex *pipex)
                 ft_error(1, "Pipe error");
         }
         else
-        {
-            // Abrir el archivo de salida solo para el último comando
             pipe_fd[1] = open_file(pipex->output_file, 1);
-        }
-
-        pid_t pid = fork();
+        pid = fork();
         if (pid == -1)
             ft_error(1, "Fork error");
-
         if (pid == 0) // Proceso hijo
         {
-            // Redirigir la entrada del archivo al stdin
             dup2(prev_fd, STDIN_FILENO);
-            // Si no es el último comando, redirigir la salida al pipe
-            if (current->next)
-                dup2(pipe_fd[1], STDOUT_FILENO);
-            else // Último comando, redirigir la salida al archivo
-                dup2(pipe_fd[1], STDOUT_FILENO);
-            
+            dup2(pipe_fd[1], STDOUT_FILENO);
             close(pipe_fd[0]);
             exec_cmd(current->cmd, pipex);
         }
-
-        // Cerrar los descriptores de archivos en el proceso padre
         close(prev_fd);
         if (current->next)
             close(pipe_fd[1]);
-        prev_fd = pipe_fd[0];  // Preparar para la siguiente iteración
+        prev_fd = pipe_fd[0];
         current = current->next;
     }
-
-    // Esperar a que todos los procesos hijos terminen
     while (wait(NULL) > 0);
 }
 
