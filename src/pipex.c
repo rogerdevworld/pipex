@@ -164,10 +164,11 @@ void ft_error(int type_of_error, char *error_message)
 // Función principal
 int main(int argc, char **argv, char **env)
 {
+    int i = 2;
     if (argc < 5)
     {
         ft_error(1, "./pipex infile cmd1 cmd2 ... outfile\n");
-        return EXIT_FAILURE;
+        return (EXIT_FAILURE);
     }
 
     t_pipex pipex;
@@ -176,11 +177,13 @@ int main(int argc, char **argv, char **env)
     pipex.output_file = argv[argc - 1];
     pipex.cmds = NULL;
 
-    for (int i = 2; i < argc - 1; i++)
+    while (i < argc - 1)
+    {
         add_cmd(&pipex.cmds, create_cmd(argv[i]));
-
+        i++;
+    }
     execute_commands(&pipex);
     free_cmds(pipex.cmds);
 
-    return EXIT_SUCCESS;
+    return (EXIT_SUCCESS);
 }
