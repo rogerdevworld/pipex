@@ -1,4 +1,4 @@
-name: Run Norminette and Francinette Tests
+name: Run Francinette Tests
 
 on:
   push:
@@ -30,11 +30,13 @@ jobs:
         pip install --upgrade pip
         pip install git+https://github.com/xicodomingues/francinette.git
 
-#- name: Run Norminette
-#      run: |
-#        source venv/bin/activate
-#        francinette  --norminette
+    # El paso de Norminette está comentado o eliminado
+    # - name: Run Norminette
+    #   run: |
+    #     source venv/bin/activate
+    #     ~/francinette/tester.sh --norminette
 
     - name: Run Francinette Tests
-      run: francinette
-        
+      run: |
+        source venv/bin/activate
+        ~/francinette/tester.sh
