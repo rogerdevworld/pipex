@@ -1,1 +1,14 @@
-17$
+total 128$
+drwxr-xr-x 6 rmarrero 2024_barcelona   169 Feb 22 22:47 .$
+drwxr-xr-x 6 rmarrero 2024_barcelona    65 Feb 22 22:45 ..$
+drwxr-xr-x 8 rmarrero 2024_barcelona   163 Feb 22 22:48 .git$
+-rw-r--r-- 1 rmarrero 2024_barcelona    39 Feb 22 22:45 git.sh$
+drwxr-xr-x 2 rmarrero 2024_barcelona    21 Feb 22 22:45 include$
+-rw-r--r-- 1 rmarrero 2024_barcelona     0 Feb 22 22:45 infile$
+drwxr-xr-x 2 rmarrero 2024_barcelona  4096 Feb 22 22:47 libft$
+-rwxr-xr-x 1 rmarrero 2024_barcelona  2113 Feb 22 22:45 Makefile$
+-rwxr-xr-x 1 rmarrero 2024_barcelona     0 Feb 22 22:48 outfile$
+-rwxr-xr-x 1 rmarrero 2024_barcelona 22736 Feb 22 22:47 pipex$
+-rwxr-xr-x 1 rmarrero 2024_barcelona 35656 Feb 22 22:45 README.md$
+drwxr-xr-x 2 rmarrero 2024_barcelona    21 Feb 22 22:45 src$
+-rw-r--r-- 1 rmarrero 2024_barcelona 52059 Feb 22 22:45 tester_pipex.sh$

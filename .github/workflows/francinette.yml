@@ -1,0 +1,41 @@
+name: Run Norminette and Francinette Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  francinette:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y curl git make gcc python3-venv
+        python3 -m venv venv
+        source venv/bin/activate
+        pip install --upgrade pip
+        pip install git+https://github.com/xicodomingues/francinette.git
+
+    - name: Run Norminette
+      run: |
+        source venv/bin/activate
+        francinette --norminette
+
+    - name: Run Francinette Tests
+      run: |
+        source venv/bin/activate
+        francinette

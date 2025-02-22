@@ -54,7 +54,6 @@ char    *get_path(char *cmd, char **env);
 void    exec_cmd(char *cmd, t_pipex *pipex);
 
 // Funciones para manejo de procesos y pipes
-void    child_process(t_pipex *pipex, int *pipe_fd, char *cmd);
 void    parent_process(t_pipex *pipex, int *pipe_fd, char *cmd, int output_fd);
 void    execute_commands(t_pipex *pipex);
 
