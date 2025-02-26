@@ -11,7 +11,7 @@
 # **************************************************************************** #
 # Mandatory functions
 NAME = pipex
-OBJS = ./src/pipex.c ./libft/libft.a
+OBJS = ./src/pipex.c ./src/cmd.c ./src/pipe.c ./libft/libft.a
 BOBJS = src/pipex_bonus.c ./libft/libft.a
 HEADER = include/pipex.h
 CC = cc

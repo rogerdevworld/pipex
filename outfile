@@ -1,1 +1,16 @@
-4$
+total 88$
+drwxrwxrwx 1 root   root     162 feb 26 17:27 .$
+drwxrwxrwx 1 root   root     286 feb 26 14:22 ..$
+drwxr-xr-x 1 root   root     166 feb 26 17:27 .git$
+drwxr-xr-x 1 root   root      18 feb 26 13:27 .github$
+-rwxrwxrwx 1 root   root      39 feb 26 13:27 git.sh$
+drwxrwxrwx 1 root   root      14 feb 26 17:26 include$
+-rwxrwxrwx 1 root   root       0 feb 26 13:27 infile$
+drwxrwxrwx 1 root   root    2690 feb 26 17:27 libft$
+-rwxrwxrwx 1 cronos cronos  2126 feb 26 17:24 Makefile$
+-rwxrwxrwx 1 root   root       0 feb 26 17:29 outfile$
+-rwxr-xr-x 1 root   root   30328 feb 26 17:27 pipex$
+-rwxrwxrwx 1 root   root   35656 feb 26 13:27 README.md$
+drwxrwxrwx 1 root   root      26 feb 26 17:27 src$
+drwxr-xr-x 1 root   root      96 feb 26 16:52 .tester$
+-rwxrwxrwx 1 cronos cronos  5870 feb 26 16:51 test.sh$

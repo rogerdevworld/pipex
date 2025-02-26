@@ -69,15 +69,6 @@ char				*my_getenv(char *name, char **env);
 // En pipex.h
 void				parse_commands(t_pipex *pipex, int argc, char **argv);
 
-void				redirect_input(int *prev_fd);
-void				redirect_output(int *pipe_fd, t_cmd *commands,
-						t_pipex *pipex);
-void				handle_child_process(t_pipex *pipex, t_cmd *commands,
-						int *prev_fd, int *pipe_fd);
-void				handle_parent_process(int *prev_fd, int *pipe_fd,
-						t_cmd *commands);
-void				handle_fork(t_pipex *pipex, t_cmd *commands, int *prev_fd,
-						int *pipe_fd);
-void				create_pipe(t_pipex *pipex, t_cmd *commands, int *pipe_fd);
+void	create_pipe_and_fork(t_pipex *pipex, t_cmd *commands, int *prev_fd);
 
 #endif
