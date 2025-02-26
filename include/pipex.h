@@ -1,63 +1,59 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rmarrero <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/26 13:12:27 by rmarrero          #+#    #+#             */
-/*   Updated: 2024/11/26 16:32:59 by rmarrero         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 #ifndef PIPEX_H
 # define PIPEX_H
 
-# include "../libft/libft.h"
-# include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <string.h>
-# include <sys/wait.h>
 # include <unistd.h>
+# include <fcntl.h>
+# include <sys/wait.h>
+# include <string.h>
+# include "../libft/libft.h"
 
-// Estructura para una lista de comandos
+# define TEMP_FILE ".here_doc"
+
 typedef struct s_cmd
 {
-	char *cmd;          // Comando completo
-	struct s_cmd *next; // Siguiente comando
-}		t_cmd;
+	char			*cmd;
+	struct s_cmd	*next;
+}	t_cmd;
 
-// Estructura principal del programa
 typedef struct s_pipex
 {
-	char **env;        // Variables de entorno
-	char *input_file;  // Archivo de entrada
-	char *output_file; // Archivo de salida
-	t_cmd *cmds;       // Lista de comandos
-}		t_pipex;
+	char	*input_file;
+	char	*output_file;
+	char	**env;
+	t_cmd	*cmds;
+	int		input_fd;
+}	t_pipex;
 
-// Funciones de manejo de archivos
-int		open_file(char *file, int in_or_out);
+// Funciones principales
+void	initialize_pipex(t_pipex *pipex, int argc, char **argv, char **env);
+void	execute_commands(t_pipex *pipex);
+void	cleanup(t_pipex *pipex);
 
-// Manejo de listas
+// Manejo de comandos
 t_cmd	*create_cmd(char *cmd);
 void	add_cmd(t_cmd **cmd_list, t_cmd *new_cmd);
 void	free_cmds(t_cmd *cmd_list);
 
-// Funciones auxiliares
-void	ft_free_tab(char **tab);
-char	*my_getenv(char *name, char **env);
-char	*get_path(char *cmd, char **env);
+// Manejo de archivos
+int		open_file(char *file, int in_or_out);
+void	handle_here_doc(t_pipex *pipex, char *limiter);
 
 // Ejecución de comandos
 void	exec_cmd(char *cmd, t_pipex *pipex);
+char	*get_path(char *cmd, char **env);
 
-// Funciones para manejo de procesos y pipes
-void	parent_process(t_pipex *pipex, int *pipe_fd, char *cmd, int output_fd);
-void	execute_commands(t_pipex *pipex);
-
-// Manejo de errores
+// Utilidades
 void	ft_error(int type_of_error, char *error_message);
-void handle_here_doc(char *delimiter,  t_pipex *pipex);
+void	ft_free_tab(char **tab);
+char	**ft_split(char const *s, char c);
+char	*ft_strdup(const char *s1);
+char	*ft_strjoin(char const *s1, char const *s2);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+size_t	ft_strlen(const char *s);
+char	*my_getenv(char *name, char **env);
+// En pipex.h
+void	parse_commands(t_pipex *pipex, int argc, char **argv);
 
 #endif
