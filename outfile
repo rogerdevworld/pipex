@@ -1,14 +1,1 @@
-total 76$
-drwxr-xr-x 1 root root   134 feb 26 15:29 .$
-drwxrwxrwx 1 root root   286 feb 26 14:22 ..$
-drwxr-xr-x 1 root root   138 feb 26 15:30 .git$
-drwxr-xr-x 1 root root    18 feb 26 13:27 .github$
--rwxrwxrwx 1 root root    39 feb 26 13:27 git.sh$
-drwxrwxrwx 1 root root    14 feb 26 13:35 include$
--rwxrwxrwx 1 root root     0 feb 26 13:27 infile$
-drwxrwxrwx 1 root root  2690 feb 26 14:46 libft$
--rwxrwxrwx 1 root root  2113 feb 26 13:27 Makefile$
--rwxrwxrwx 1 root root     0 feb 26 15:30 outfile$
--rwxr-xr-x 1 root root 28608 feb 26 14:46 pipex$
--rwxrwxrwx 1 root root 35656 feb 26 13:27 README.md$
-drwxrwxrwx 1 root root    14 feb 26 14:46 src$
+4$
