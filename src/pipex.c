@@ -6,7 +6,7 @@
 /*   By: rmarrero <rmarrero@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:14 by rmarrero          #+#    #+#             */
-/*   Updated: 2025/02/26 16:26:26 by rmarrero         ###   ########.fr       */
+/*   Updated: 2025/02/26 16:30:51 by rmarrero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../include/pipex.h"
