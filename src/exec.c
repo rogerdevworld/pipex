@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rmarrero <rmarrero@student.42barcelona.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/28 23:30:22 by rmarrero          #+#    #+#             */
+/*   Updated: 2025/02/28 23:30:25 by rmarrero         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/pipex.h"
 
 // Ejecutar todos los comandos
@@ -13,8 +25,7 @@ void	execute_commands(t_pipex *pipex)
 		create_pipe_and_fork(pipex, commands, &prev_fd);
 		commands = commands->next;
 	}
-	while (wait(NULL) > 0)
-		;
+	while (wait(NULL) > 0);
 }
 
 void	handle_here_doc(t_pipex *pipex, char *limiter)
@@ -49,8 +60,8 @@ void	handle_here_doc(t_pipex *pipex, char *limiter)
 // Función para ejecutar un comando
 void	exec_cmd(char *cmd, t_pipex *pipex)
 {
-	char	**args;
-	char	*path;
+	char **args;
+	char *path;
 
 	args = ft_split(cmd, ' ');
 	if (!args)

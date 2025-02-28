@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rmarrero <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: rmarrero <rmarrero@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/13 12:28:02 by rmarrero          #+#    #+#              #
-#    Updated: 2024/11/13 12:44:26 by rmarrero         ###   ########.fr        #
+#    Updated: 2025/02/28 23:49:28 by rmarrero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-# Mandatory functions
+
 NAME = pipex
-OBJS = ./src/pipex.c ./src/cmd.c ./src/pipe.c ./libft/libft.a
+OBJS = ./src/pipex.c ./src/pipex_utils.c ./src/path.c ./src/pipe.c ./src/cmd.c ./src/exec.c ./src/parse.c ./libft/libft.a
 BOBJS = src/pipex_bonus.c ./libft/libft.a
 HEADER = include/pipex.h
 CC = cc
