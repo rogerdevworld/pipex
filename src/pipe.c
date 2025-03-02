@@ -33,7 +33,7 @@ static void	redirect_output(int *pipe_fd, t_cmd *commands, t_pipex *pipex)
 	}
 	else
 	{
-		out_fd = open_file(pipex->output_file, 1);
+		out_fd = ft_open(pipex->output_file, 1);
 		dup2(out_fd, STDOUT_FILENO);
 		close(out_fd);
 	}

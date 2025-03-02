@@ -50,7 +50,7 @@ void				add_cmd(t_cmd **cmd_list, t_cmd *new_cmd);
 void				free_cmds(t_cmd *cmd_list);
 
 // Manejo de archivos
-int					open_file(char *file, int in_or_out);
+int					ft_open(char *file, int in_or_out);
 void				handle_here_doc(t_pipex *pipex, char *limiter);
 
 // Ejecución de comandos

@@ -13,7 +13,7 @@
 #include "../include/pipex.h"
 
 // Función para abrir archivos
-int	open_file(char *file, int in_or_out)
+int	ft_open(char *file, int in_or_out)
 {
 	int	fd;
 
