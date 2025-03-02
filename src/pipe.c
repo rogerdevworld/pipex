@@ -12,12 +12,6 @@
 
 #include "../include/pipex.h"
 
-static void	create_pipe(t_pipex *pipex, t_cmd *commands, int *pipe_fd)
-{
-	if (commands->next && pipe(pipe_fd) == -1)
-		ft_error(1, "Pipe error");
-}
-
 static void	redirect_input(int *prev_fd)
 {
 	if (*prev_fd != STDIN_FILENO)
@@ -64,29 +58,18 @@ static void	handle_parent_process(int *prev_fd, int *pipe_fd, t_cmd *commands)
 	}
 }
 
-static void	handle_fork(t_pipex *pipex, t_cmd *commands, int *prev_fd, int *pipe_fd)
+void	create_pipe_and_fork(t_pipex *pipex, t_cmd *commands, int *prev_fd)
 {
+	int		pipe_fd[2];
 	pid_t	pid;
 
+	if (commands->next && pipe(pipe_fd) == -1)
+		ft_error(1, "Pipe error");
 	pid = fork();
 	if (pid == -1)
 		ft_error(1, "Fork error");
 	if (pid == 0)
-	{
 		handle_child_process(pipex, commands, prev_fd, pipe_fd);
-	}
 	else
-	{
 		handle_parent_process(prev_fd, pipe_fd, commands);
-	}
-}
-
-void	create_pipe_and_fork(t_pipex *pipex, t_cmd *commands, int *prev_fd)
-{
-	int	pipe_fd[2];
-
-	// Crear el pipe si es necesario
-	create_pipe(pipex, commands, pipe_fd);
-	// Manejar el fork y redirección
-	handle_fork(pipex, commands, prev_fd, pipe_fd);
 }

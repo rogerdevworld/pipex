@@ -25,7 +25,8 @@ void	execute_commands(t_pipex *pipex)
 		create_pipe_and_fork(pipex, commands, &prev_fd);
 		commands = commands->next;
 	}
-	while (wait(NULL) > 0);
+	while (wait(NULL) > 0)
+		;
 }
 
 void	handle_here_doc(t_pipex *pipex, char *limiter)
@@ -60,8 +61,8 @@ void	handle_here_doc(t_pipex *pipex, char *limiter)
 // Función para ejecutar un comando
 void	exec_cmd(char *cmd, t_pipex *pipex)
 {
-	char **args;
-	char *path;
+	char	**args;
+	char	*path;
 
 	args = ft_split(cmd, ' ');
 	if (!args)

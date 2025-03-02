@@ -14,7 +14,7 @@
 // Función principal
 int	main(int argc, char **argv, char **env)
 {
-	t_pipex pipex;
+	t_pipex	pipex;
 
 	if (argc < 5)
 	{
