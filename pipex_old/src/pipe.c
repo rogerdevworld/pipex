@@ -12,19 +12,15 @@
 
 #include "../include/pipex.h"
 
-static void	redirect_input(int *prev_fd)
+void	redirect_io_and_execute(t_pipex *pipex, t_cmd *commands, int *prev_fd, int *pipe_fd)
 {
+	int out_fd;
+
 	if (*prev_fd != STDIN_FILENO)
 	{
 		dup2(*prev_fd, STDIN_FILENO);
 		close(*prev_fd);
 	}
-}
-
-static void	redirect_output(int *pipe_fd, t_cmd *commands, t_pipex *pipex)
-{
-	int	out_fd;
-
 	if (commands->next)
 	{
 		dup2(pipe_fd[1], STDOUT_FILENO);
@@ -37,13 +33,6 @@ static void	redirect_output(int *pipe_fd, t_cmd *commands, t_pipex *pipex)
 		dup2(out_fd, STDOUT_FILENO);
 		close(out_fd);
 	}
-}
-
-static void	handle_child_process(t_pipex *pipex, t_cmd *commands, int *prev_fd,
-		int *pipe_fd)
-{
-	redirect_input(prev_fd);
-	redirect_output(pipe_fd, commands, pipex);
 	exec_cmd(commands->cmd, pipex);
 }
 
@@ -69,7 +58,7 @@ void	create_pipe_and_fork(t_pipex *pipex, t_cmd *commands, int *prev_fd)
 	if (pid == -1)
 		ft_error("Fork error");
 	if (pid == 0)
-		handle_child_process(pipex, commands, prev_fd, pipe_fd);
+		redirect_io_and_execute(pipex, commands, prev_fd, pipe_fd);
 	else
 		handle_parent_process(prev_fd, pipe_fd, commands);
 }
