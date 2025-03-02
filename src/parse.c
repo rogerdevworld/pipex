@@ -13,13 +13,12 @@
 #include "../include/pipex.h"
 
 // Función para manejar errores
-void	ft_error(int type_of_error, char *error_message)
+void	ft_error(char *error_message)
 {
-	if (type_of_error == 1)
-	{
-		fprintf(stderr, "Error: %s\n", error_message);
-		exit(EXIT_FAILURE);
-	}
+	ft_putstr_fd("Error: ", 2);
+	ft_putstr_fd(error_message, 2);
+	ft_putstr_fd("\n", 2);
+	exit(EXIT_FAILURE);
 }
 
 // Parsear los comandos
@@ -36,4 +35,19 @@ void	parse_commands(t_pipex *pipex, int argc, char **argv)
 		add_cmd(&pipex->cmds, create_cmd(argv[i]));
 		i++;
 	}
+}
+
+int	validate_arguments(int argc, char **argv)
+{
+	if (argc < 5)
+	{
+		ft_error("./pipex infile cmd1 cmd2 ... outfile\n");
+		return (EXIT_FAILURE);
+	}
+	if (ft_strncmp(argv[1], "here_doc", 8) == 0 && argc < 6)
+	{
+		ft_error("./pipex here_doc LIMITER cmd1 cmd2 ... outfile\n");
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
 }

@@ -16,16 +16,8 @@ int	main(int argc, char **argv, char **env)
 {
 	t_pipex	pipex;
 
-	if (argc < 5)
-	{
-		ft_error(1, "./pipex infile cmd1 cmd2 ... outfile\n");
+	if (validate_arguments(argc, argv) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	}
-	if (ft_strncmp(argv[1], "here_doc", 8) == 0 && argc < 6)
-	{
-		ft_error(1, "./pipex here_doc LIMITER cmd1 cmd2 ... outfile\n");
-		return (EXIT_FAILURE);
-	}
 	initialize_pipex(&pipex, argc, argv, env);
 	execute_commands(&pipex);
 	cleanup(&pipex);

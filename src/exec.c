@@ -41,7 +41,7 @@ void	handle_here_doc(t_pipex *pipex, char *limiter)
 	limiter_len = ft_strlen(limiter);
 	while (1)
 	{
-		write(1, "> ", 2);
+		write(1, "pipex> ", 2);
 		line = get_next_line(STDIN_FILENO);
 		if (!line || (ft_strncmp(line, limiter, limiter_len) == 0
 				&& line[limiter_len] == '\n'))
