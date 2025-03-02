@@ -58,7 +58,7 @@ void				exec_cmd(char *cmd, t_pipex *pipex);
 char				*get_path(char *cmd, char **env);
 
 // Utilidades
-void				ft_error(int type_of_error, char *error_message);
+void	ft_error(char *error_message);
 void				ft_free_tab(char **tab);
 char				**ft_split(char const *s, char c);
 char				*ft_strdup(const char *s1);
@@ -70,5 +70,6 @@ char				*my_getenv(char *name, char **env);
 void				parse_commands(t_pipex *pipex, int argc, char **argv);
 
 void	create_pipe_and_fork(t_pipex *pipex, t_cmd *commands, int *prev_fd);
-
+void	validate_infile(char *infile);
+int	validate_arguments(int argc, char **argv);
 #endif

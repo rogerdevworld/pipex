@@ -39,10 +39,14 @@ void	parse_commands(t_pipex *pipex, int argc, char **argv)
 
 int	validate_arguments(int argc, char **argv)
 {
-	if (argc < 5)
+	if (ft_strncmp(argv[1], "here_doc", 8) != 0)
 	{
-		ft_error("./pipex infile cmd1 cmd2 ... outfile\n");
-		return (EXIT_FAILURE);
+		if (argc < 5)
+		{
+			ft_error("./pipex infile cmd1 cmd2 ... outfile\n");
+			return (EXIT_FAILURE);
+		}
+		validate_infile(argv[1]);
 	}
 	if (ft_strncmp(argv[1], "here_doc", 8) == 0 && argc < 6)
 	{
@@ -50,4 +54,14 @@ int	validate_arguments(int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
+}
+
+void	validate_infile(char *infile)
+{
+	int	fd;
+
+	fd = open(infile, O_RDONLY);
+	if (fd == -1)
+		ft_error("infile no válido o no se puede abrir.");
+	close(fd);
 }

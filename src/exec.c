@@ -37,11 +37,11 @@ void	handle_here_doc(t_pipex *pipex, char *limiter)
 
 	temp_fd = open(TEMP_FILE, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (temp_fd == -1)
-		ft_error(1, "Error creating temporary file");
+		ft_error("Error creating temporary file");
 	limiter_len = ft_strlen(limiter);
 	while (1)
 	{
-		write(1, "pipex> ", 2);
+		write(1, "pipex> ", 7);
 		line = get_next_line(STDIN_FILENO);
 		if (!line || (ft_strncmp(line, limiter, limiter_len) == 0
 				&& line[limiter_len] == '\n'))
@@ -55,7 +55,7 @@ void	handle_here_doc(t_pipex *pipex, char *limiter)
 	close(temp_fd);
 	pipex->input_fd = open(TEMP_FILE, O_RDONLY);
 	if (pipex->input_fd == -1)
-		ft_error(1, "Error opening temporary file");
+		ft_error("Error opening temporary file");
 }
 
 // Función para ejecutar un comando
@@ -66,12 +66,12 @@ void	exec_cmd(char *cmd, t_pipex *pipex)
 
 	args = ft_split(cmd, ' ');
 	if (!args)
-		ft_error(1, "Failed to split command");
+		ft_error("Failed to split command");
 	path = get_path(args[0], pipex->env);
 	if (!path)
 	{
 		ft_free_tab(args);
-		ft_error(1, "Command not found");
+		ft_error("Command not found");
 	}
 	if (execve(path, args, pipex->env) == -1)
 	{

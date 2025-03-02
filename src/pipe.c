@@ -64,10 +64,10 @@ void	create_pipe_and_fork(t_pipex *pipex, t_cmd *commands, int *prev_fd)
 	pid_t	pid;
 
 	if (commands->next && pipe(pipe_fd) == -1)
-		ft_error(1, "Pipe error");
+		ft_error("Pipe error");
 	pid = fork();
 	if (pid == -1)
-		ft_error(1, "Fork error");
+		ft_error("Fork error");
 	if (pid == 0)
 		handle_child_process(pipex, commands, prev_fd, pipe_fd);
 	else
