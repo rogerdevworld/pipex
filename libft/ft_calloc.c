@@ -23,6 +23,3 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	ft_bzero(pointer, nmemb * size);
 	return (pointer);
 }
-//cases of memory overflow
-//	if (size && count > SIZE_MAX / size)
-//		return (NULL);

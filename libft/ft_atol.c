@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_atoi_long.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rmarrero <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/11 18:38:41 by rmarrero          #+#    #+#             */
-/*   Updated: 2025/01/24 16:28:33 by rmarrero         ###   ########.fr       */
+/*   Created: 2025/01/24 16:08:38 by rmarrero          #+#    #+#             */
+/*   Updated: 2025/01/24 16:09:52 by rmarrero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
 
-// --- ft_atoi version for converting strings to integers --- //
-int	ft_atoi(const char *nptr)
+// --- atoi version for long numbers --- //
+long	ft_atol(const char *nptr)
 {
-	int		result;
+	long	result;
 	size_t	i;
 	int		sign;
 
@@ -30,7 +30,7 @@ int	ft_atoi(const char *nptr)
 	}
 	else if (nptr[i] == '+')
 		i++;
-	while (ft_isdigit(nptr[i]))
+	while (nptr[i] >= '0' && nptr[i] <= '9')
 	{
 		result = result * 10 + (nptr[i] - '0');
 		i++;

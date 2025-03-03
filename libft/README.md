@@ -55,7 +55,7 @@
 
 ### Funciones específicas
 - get_next_line
-- ft_printf
+- [ft_printf](https://github.com/rogerdevworld/ft_printf)
 
 ---
 ## Compilación con `make`

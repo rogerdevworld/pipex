@@ -6,7 +6,7 @@
 /*   By: rmarrero <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 14:07:36 by rmarrero          #+#    #+#             */
-/*   Updated: 2024/11/26 16:23:14 by rmarrero         ###   ########.fr       */
+/*   Updated: 2025/01/24 16:27:51 by rmarrero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -85,16 +85,12 @@ void	ft_pointer(uintptr_t pointer, int *length, int *flag)
 		return ;
 	}
 	if (write(1, "0x", 2) == -1)
-	{
-		(*flag) = -1;
-		return ;
-	}
+		return ((*flag) = -1, (void)0);
 	(*length) += 2;
 	while (pointer != 0)
 	{
-		str_hex[i] = hex[pointer % 16];
+		str_hex[i++] = hex[pointer % 16];
 		pointer = pointer / 16;
-		i++;
 	}
 	while (i--)
 		ft_putchar(str_hex[i], length, flag);

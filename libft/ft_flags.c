@@ -6,7 +6,7 @@
 /*   By: rmarrero <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 14:06:23 by rmarrero          #+#    #+#             */
-/*   Updated: 2024/11/26 16:22:42 by rmarrero         ###   ########.fr       */
+/*   Updated: 2025/01/24 16:33:01 by rmarrero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -34,7 +34,8 @@ void	is_flag(char c, va_list args, int *length, int *flag)
 
 int	ft_validation(char c)
 {
-	if (c == 'c' || c == 'i' ||  c == 's' || c == 'p' || c == 'u' || c == 'd' || c == 'x' || c == 'X' || c == '%')
+	if (c == 'c' || c == 'i' || c == 's' || c == 'p'\
+		|| c == 'u' || c == 'd' || c == 'x' || c == 'X' || c == '%')
 		return (1);
 	return (-1);
 }

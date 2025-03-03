@@ -1,39 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_sqrt.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rmarrero <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/11 18:38:41 by rmarrero          #+#    #+#             */
-/*   Updated: 2025/01/24 16:28:33 by rmarrero         ###   ########.fr       */
+/*   Created: 2025/01/24 16:10:29 by rmarrero          #+#    #+#             */
+/*   Updated: 2025/01/24 16:11:13 by rmarrero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
 
-// --- ft_atoi version for converting strings to integers --- //
-int	ft_atoi(const char *nptr)
+int	ft_sqrt(int nb)
 {
-	int		result;
-	size_t	i;
-	int		sign;
+	int	low;
+	int	high;
+	int	mid;
 
-	sign = 1;
-	i = 0;
-	result = 0;
-	while (nptr[i] == 32 || (nptr[i] >= 9 && nptr[i] <= 13))
-		i++;
-	if (nptr[i] == '-')
+	if (nb < 0)
+		return (0);
+	if (nb == 0 || nb == 1)
+		return (nb);
+	low = 0;
+	high = nb;
+	mid = (low + high) / 2;
+	while (low <= high)
 	{
-		sign = -1;
-		i++;
+		mid = (low + high) / 2;
+		if (mid * mid == nb)
+			return (mid);
+		else if (mid * mid < nb)
+			low = mid + 1;
+		else
+			high = mid - 1;
 	}
-	else if (nptr[i] == '+')
-		i++;
-	while (ft_isdigit(nptr[i]))
-	{
-		result = result * 10 + (nptr[i] - '0');
-		i++;
-	}
-	return (result * sign);
+	if ((low * low - nb) < (nb - high * high))
+		return (low);
+	return (high);
 }

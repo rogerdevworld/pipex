@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rmarrero <rmarrero@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,24 +11,30 @@
 /* ************************************************************************** */
 #include "../include/pipex.h"
 
-// Función principal
-int	main(int ac, char **av, char **env)
+// Función para manejar el here_doc
+void	ft_here_doc_child(char *delimiter, int *p_fd)
 {
-	if (ac < 5)
-		ft_exit_handler(1, "Usage: ./pipex infile cmd1 cmd2 outfile");
-	ft_parse_args(ac, av, env);
-	return (0);
+	char	*line;
+
+	close(p_fd[0]);
+	while (1)
+	{
+		write(1, "pipex> ", 7);
+		line = get_next_line(STDIN_FILENO);
+		if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
+		{
+			free(line);
+			break ;
+		}
+		write(p_fd[1], line, ft_strlen(line));
+		free(line);
+	}
+	close(p_fd[1]);
+	exit(0);
 }
 
-// Función para ejecutar un comando
-void	ft_exec_cmd(t_cmd *cmd, char **env)
-{
-	if (execve(cmd->path, cmd->args, env) == -1)
-		ft_exit_handler(1, "Command execution failed");
-}
-
-// Función para crear un pipe y ejecutar un comando en el proceso hijo
-void	ft_do_pipe(t_cmd *cmd, char **env)
+// Función principal para manejar el here_doc
+void	ft_here_doc(char *delimiter)
 {
 	int		p_fd[2];
 	pid_t	pid;
@@ -39,11 +45,7 @@ void	ft_do_pipe(t_cmd *cmd, char **env)
 	if (pid == -1)
 		ft_exit_handler(1, "Fork failed");
 	if (pid == 0)
-	{
-		close(p_fd[0]);
-		dup2(p_fd[1], STDOUT_FILENO);
-		ft_exec_cmd(cmd, env);
-	}
+		ft_here_doc_child(delimiter, p_fd);
 	else
 	{
 		close(p_fd[1]);
@@ -52,25 +54,11 @@ void	ft_do_pipe(t_cmd *cmd, char **env)
 	}
 }
 
-// Función para manejar los archivos de entrada y salida
-void	ft_handle_in_out(int ac, char **av, int *fd_in, int *fd_out)
+// Función para manejar el caso del here_doc y apertura de archivo
+void	ft_handle_here_doc(int ac, char **av, int *fd_out)
 {
-	ft_check_infile(av[1]);
-	*fd_in = ft_open_file(av[1], 0);
-	*fd_out = ft_open_file(av[ac - 1], 1);
-	dup2(*fd_in, STDIN_FILENO);
-}
-
-// Función para ejecutar los comandos
-void	ft_execute_commands(int ac, char **av, char **env, int i)
-{
-	t_cmd	cmd;
-
-	while (i < ac - 2)
-	{
-		ft_init_cmd(&cmd, av[i], env);
-		ft_do_pipe(&cmd, env);
-		ft_free_cmd(&cmd);
-		i++;
-	}
+	if (ac < 6)
+		ft_exit_handler(1, "Usage: ./pipex here_doc LIMITER cmd1 cmd2 outfile");
+	*fd_out = ft_open_file(av[ac - 1], 2);
+	ft_here_doc(av[2]);
 }

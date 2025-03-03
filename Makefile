@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 NAME = pipex
-OBJS = ./src/pipex.c ./libft/libft.a
+OBJS = ./src/pipex.c ./src/parse.c ./src/path.c ./src/pipex_utils.c ./src/here_doc.c ./src/cmd.c ./libft/libft.a
 BOBJS = src/pipex_bonus.c ./libft/libft.a
 HEADER = include/pipex.h
 CC = cc

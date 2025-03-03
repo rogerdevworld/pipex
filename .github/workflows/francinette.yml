@@ -1,42 +1,43 @@
-name: Run Francinette Tests
+name: CI for Pipex Project
 
 on:
   push:
     branches:
       - main
+      - dev
   pull_request:
     branches:
       - main
+      - dev
 
 jobs:
-  francinette:
+  norminette:
+    name: Run Norminette
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.8'
+      - name: Install dependencies
+        run: |
+          curl -sSL https://raw.githubusercontent.com/42School/norminette/master/norminette.sh | bash
 
-    - name: Install dependencies
-      run: |
-        sudo apt update
-        sudo apt install -y curl git make gcc python3-venv
-        python3 -m venv venv
-        source venv/bin/activate
-        pip install --upgrade pip
-        pip install git+https://github.com/xicodomingues/francinette.git
+      - name: Run Norminette
+        run: norminette .
 
-    # El paso de Norminette está comentado o eliminado
-    # - name: Run Norminette
-    #   run: |
-    #     source venv/bin/activate
-    #     ~/francinette/tester.sh --norminette
+  build:
+    name: Build Pipex Project
+    runs-on: ubuntu-latest
 
-    - name: Run Francinette Tests
-      run: |
-        source venv/bin/activate
-        ~/francinette/tester.sh
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y gcc make
+
+      - name: Run Makefile
+        run: make

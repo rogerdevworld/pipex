@@ -6,7 +6,7 @@
 /*   By: rmarrero <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 14:06:47 by rmarrero          #+#    #+#             */
-/*   Updated: 2024/11/26 16:23:01 by rmarrero         ###   ########.fr       */
+/*   Updated: 2025/01/24 16:39:25 by rmarrero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -20,31 +20,23 @@ int	ft_printf(const char *str, ...)
 	int		length;
 	int		flag;
 
-	i = 0;
+	i = -1;
 	length = 0;
 	flag = 1;
 	va_start(args, str);
-	if (!*str)
-		return (0);
-	while (str[i])
+	while (str[++i])
 	{
-		if (str[i] == '%')
+		if (str[i] == '%' && str[++i])
 		{
-			i++;
-			if (str[i])
-				if (ft_validation(str[i]) == 1)
-					is_flag(str[i], args, &length, &flag);
-				else
-					return (-1);
+			if (ft_validation(str[i]) == 1)
+				is_flag(str[i], args, &length, &flag);
 			else
-				break ;
+				return (-1);
 		}
 		else
 			ft_putchar(str[i], &length, &flag);
 		if (flag == -1)
 			return (-1);
-		i++;
 	}
-	va_end(args);
-	return (length);
+	return (va_end(args), length);
 }

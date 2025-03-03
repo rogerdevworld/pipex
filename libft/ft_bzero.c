@@ -24,13 +24,3 @@ void	ft_bzero(void *s, size_t n)
 		i++;
 	}
 }
-/*
-int main(void)
-{
-	char str[] = "hola";
-
-	printf("antes: %s", str);
-	ft_bzero(str, 2);
-	printf("despues %s",str);
-       return 0;
-}*/
