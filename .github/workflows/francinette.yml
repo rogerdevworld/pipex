@@ -19,12 +19,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: |
-          curl -sSL https://raw.githubusercontent.com/42School/norminette/master/norminette.sh | bash
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install Norminette
+        run: pip install norminette
 
       - name: Run Norminette
-        run: norminette .
+        run: norminette
 
   build:
     name: Build Pipex Project
