@@ -6,7 +6,7 @@
 /*   By: rmarrero <rmarrero@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:14 by rmarrero          #+#    #+#             */
-/*   Updated: 2025/03/02 07:38:50 by rmarrero         ###   ########.fr       */
+/*   Updated: 2025/03/03 02:32:39 by rmarrero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../include/pipex.h"
@@ -19,7 +19,7 @@ int	main(int ac, char **av, char **env)
 	ft_parse_args(ac, av, env);
 	return (0);
 }
-//unlink(argv[agrc - 1]);
+// unlink(argv[agrc - 1]);
 
 // Función para manejar errores y salir del programa
 void	ft_exit_handler(int status, char *msg)
