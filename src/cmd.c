@@ -11,18 +11,18 @@
 /* ************************************************************************** */
 #include "../include/pipex.h"
 
-// Función para inicializar la estructura t_cmd
+// -- function to initialize the t_cmd structure -- //
 void	ft_init_cmd(t_cmd *cmd, char *cmd_str, char **env)
 {
 	cmd->args = ft_split(cmd_str, ' ');
 	if (!cmd->args)
-		ft_exit_handler(1, "Failed to split command");
+		ft_exit(1, "Failed to split command");
 	cmd->path = get_path(cmd->args[0], env);
 	if (!cmd->path)
-		ft_exit_handler(1, "Command not found");
+		ft_exit(1, "Command not found");
 }
 
-// Función para liberar la memoria de la estructura t_cmd
+// -- function to free the memory of the structure t_cmd -- //
 void	ft_free_cmd(t_cmd *cmd)
 {
 	if (cmd->args)
