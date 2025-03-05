@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 #include "../include/pipex.h"
 
-// Función para manejar el here_doc
 void	ft_here_doc_child(char *delimiter, int *p_fd)
 {
 	char	*line;
@@ -33,17 +32,17 @@ void	ft_here_doc_child(char *delimiter, int *p_fd)
 	exit(0);
 }
 
-// Función principal para manejar el here_doc
+// -- main function to handle here_doc -- //
 void	ft_here_doc(char *delimiter)
 {
 	int		p_fd[2];
 	pid_t	pid;
 
 	if (pipe(p_fd) == -1)
-		ft_exit_handler(1, "Pipe creation failed");
+		ft_exit(1, "Pipe creation failed");
 	pid = fork();
 	if (pid == -1)
-		ft_exit_handler(1, "Fork failed");
+		ft_exit(1, "Fork failed");
 	if (pid == 0)
 		ft_here_doc_child(delimiter, p_fd);
 	else
@@ -52,13 +51,4 @@ void	ft_here_doc(char *delimiter)
 		dup2(p_fd[0], STDIN_FILENO);
 		waitpid(pid, NULL, 0);
 	}
-}
-
-// Función para manejar el caso del here_doc y apertura de archivo
-void	ft_handle_here_doc(int ac, char **av, int *fd_out)
-{
-	if (ac < 6)
-		ft_exit_handler(1, "Usage: ./pipex here_doc LIMITER cmd1 cmd2 outfile");
-	*fd_out = ft_open_file(av[ac - 1], 2);
-	ft_here_doc(av[2]);
 }
