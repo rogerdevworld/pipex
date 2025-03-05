@@ -27,7 +27,8 @@ void	ft_exec_cmd(t_cmd *cmd, char **env)
 		ft_exit(1, "Command execution failed");
 }
 
-// -- function for creating a pipe and executing a command in the child process -- //
+// -- function for creating a pipe and executing -- //
+// -- a command in the child process -- //
 void	ft_pipe_and_fork(t_cmd *cmd, char **env)
 {
 	int		p_fd[2];
