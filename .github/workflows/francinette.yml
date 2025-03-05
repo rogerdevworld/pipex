@@ -45,3 +45,6 @@ jobs:
 
       - name: Run Makefile
         run: make
+      
+      - name: Run Makefile
+        run: make bonus
