@@ -11,33 +11,33 @@
 /* ************************************************************************** */
 #include "../include/pipex.h"
 
-// Función principal
-int	main(int ac, char **av, char **env)
+// -- main -- //
+int	main(int argc, char **argv, char **env)
 {
-	if (ac < 5)
-		ft_exit_handler(1, "Usage: ./pipex infile cmd1 cmd2 outfile");
-	ft_parse_args(ac, av, env);
+	if (argc < 5)
+		ft_exit(1, "Usage: ./pipex infile cmd1 cmd2 outfile");
+	ft_parse_args(argc, argv, env);
 	return (0);
 }
 
-// Función para ejecutar un comando
+// -- function to execute a command -- //
 void	ft_exec_cmd(t_cmd *cmd, char **env)
 {
 	if (execve(cmd->path, cmd->args, env) == -1)
-		ft_exit_handler(1, "Command execution failed");
+		ft_exit(1, "Command execution failed");
 }
 
-// Función para crear un pipe y ejecutar un comando en el proceso hijo
-void	ft_do_pipe(t_cmd *cmd, char **env)
+// -- function for creating a pipe and executing a command in the child process -- //
+void	ft_pipe_and_fork(t_cmd *cmd, char **env)
 {
 	int		p_fd[2];
 	pid_t	pid;
 
 	if (pipe(p_fd) == -1)
-		ft_exit_handler(1, "Pipe creation failed");
+		ft_exit(1, "pipe failed");
 	pid = fork();
 	if (pid == -1)
-		ft_exit_handler(1, "Fork failed");
+		ft_exit(1, "fork failed");
 	if (pid == 0)
 	{
 		close(p_fd[0]);
@@ -52,24 +52,24 @@ void	ft_do_pipe(t_cmd *cmd, char **env)
 	}
 }
 
-// Función para manejar los archivos de entrada y salida
-void	ft_handle_in_out(int ac, char **av, int *fd_in, int *fd_out)
+// -- function for handling input and output files -- //
+void	ft_in_out(int argc, char **argv, int *fd_in, int *fd_out)
 {
-	ft_check_infile(av[1]);
-	*fd_in = ft_open_file(av[1], 0);
-	*fd_out = ft_open_file(av[ac - 1], 1);
+	ft_check_infile(argv[1]);
+	*fd_in = ft_open(argv[1], 0);
+	*fd_out = ft_open(argv[argc - 1], 1);
 	dup2(*fd_in, STDIN_FILENO);
 }
 
-// Función para ejecutar los comandos
-void	ft_execute_commands(int ac, char **av, char **env, int i)
+// -- function to execute commands -- //
+void	ft_execute_commands(int argc, char **argv, char **env, int i)
 {
 	t_cmd	cmd;
 
-	while (i < ac - 2)
+	while (i < argc - 2)
 	{
-		ft_init_cmd(&cmd, av[i], env);
-		ft_do_pipe(&cmd, env);
+		ft_init_cmd(&cmd, argv[i], env);
+		ft_pipe_and_fork(&cmd, env);
 		ft_free_cmd(&cmd);
 		i++;
 	}
