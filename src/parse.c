@@ -11,23 +11,8 @@
 /* ************************************************************************** */
 #include "../include/pipex.h"
 
-// Función para manejar errores y salir del programa
-void	ft_exit_handler(int status, char *msg)
-{
-	ft_putstr_fd("pipex: ", STDERR_FILENO);
-	ft_putendl_fd(msg, STDERR_FILENO);
-	exit(status);
-}
-
-// Función para verificar si el archivo de entrada existe
-void	ft_check_infile(char *infile)
-{
-	if (access(infile, F_OK) == -1)
-		ft_exit_handler(1, "Infile does not exist");
-}
-
-// Función principal para parsear los argumentos
-void	ft_parse_args(int ac, char **av, char **env)
+// -- main function to parse arguments -- //
+void	ft_parse_args(int argc, char **argv, char **env)
 {
 	int		i;
 	t_cmd	cmd;
@@ -35,17 +20,20 @@ void	ft_parse_args(int ac, char **av, char **env)
 	int		fd_out;
 
 	i = 2;
-	if (ft_strcmp(av[1], "here_doc") == 0)
+	if (ft_strcmp(argv[1], "here_doc") == 0)
 	{
-		ft_handle_here_doc(ac, av, &fd_out);
+		if (argc < 6)
+			ft_exit(1, "Usage: ./pipex here_doc LIMITER cmd1 cmd2 outfile");
+		fd_out = ft_open(argv[argc - 1], 1);
+		ft_here_doc(argv[2]);
 		i = 3;
 	}
 	else
 	{
-		ft_handle_in_out(ac, av, &fd_in, &fd_out);
+		ft_in_out(argc, argv, &fd_in, &fd_out);
 	}
-	ft_execute_commands(ac, av, env, i);
-	ft_init_cmd(&cmd, av[ac - 2], env);
+	ft_execute_commands(argc, argv, env, i);
+	ft_init_cmd(&cmd, argv[argc - 2], env);
 	dup2(fd_out, STDOUT_FILENO);
 	ft_exec_cmd(&cmd, env);
 	ft_free_cmd(&cmd);
