@@ -142,4 +142,6 @@ double				ft_atof(const char *str);
 // --- pipex --- //
 int					ft_strcmp(const char *s1, const char *s2);
 
+// -- gets environment variable value -- //
+char				*ft_getenv(char *name, char **env);
 #endif
