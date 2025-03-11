@@ -686,7 +686,7 @@ Si ejecutamos el siguiente pipeline:
 
 ---
 
-## **1. Representación en código (`ft_do_pipe`)**
+## **1. Representación en código (`pipe_and_fork`)**
 Como este pipeline tiene **cuatro comandos**, se necesitan **tres tuberías** y **cuatro procesos** (uno por cada comando).
 
 ---
