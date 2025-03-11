@@ -621,7 +621,6 @@ Si ejecutamos el siguiente pipeline:
 ```bash
 < infile wc -l | cat -e
 ```
-Vamos a analizar cómo fluyen los datos a través de la tubería con el código `ft_do_pipe`.
 
 ---
 
@@ -650,7 +649,7 @@ Después de ejecutarse, `wc -l` escribe `3\n` en la tubería.
 
 ---
 
-## **Representación en código (`ft_do_pipe`)**
+## **Representación en código (`pipe_and_fork`)**
 1. **Se crea la tubería (`pipe()`).**
 2. **Se hace `fork()`, creando un hijo.**
 3. **Código del hijo (`wc -l`):**
@@ -684,8 +683,6 @@ Si ejecutamos el siguiente pipeline:
 ```bash
 < infile wc -l | cat -e | wc -l | cat -e
 ```
-
-Vamos a analizar cómo fluye la información en cada paso y cómo se representaría en código con `ft_do_pipe`.
 
 ---
 
