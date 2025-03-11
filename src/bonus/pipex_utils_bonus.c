@@ -19,7 +19,9 @@ int	ft_open(char *file, int mode)
 	if (mode == 0)
 		fd = open(file, O_RDONLY);
 	else if (mode == 1)
-		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else if (mode == 2)
+		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd == -1)
 		ft_exit(1, "Failed to open file");
 	return (fd);
