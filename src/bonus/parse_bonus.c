@@ -24,7 +24,7 @@ void	ft_parse_args(int argc, char **argv, char **env)
 	{
 		if (argc < 6)
 			ft_exit(1, "Usage: ./pipex here_doc LIMITER cmd1 cmd2 outfile");
-		fd_out = ft_open(argv[argc - 1], 1);
+		fd_out = ft_open(argv[argc - 1], 2);
 		ft_here_doc(argv[2]);
 		i = 3;
 	}
