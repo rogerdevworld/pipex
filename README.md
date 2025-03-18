@@ -202,7 +202,6 @@ Voy a explicar paso a paso del proceso para hacer pipex proyecto de 42 con bonus
     
     Esto permite la comunicación entre los procesos de manera controlada.
     
-    Si estás trabajando en `pipex`, esta es una base fundamental para redirigir la salida de un proceso a la entrada de otro. ¿Quieres que te explique cómo usar `pipe()` con `execve()`? 🚀
     
 - **execve();**
     
@@ -390,8 +389,6 @@ Voy a explicar paso a paso del proceso para hacer pipex proyecto de 42 con bonus
     - Facilita el encadenamiento de comandos (`|` en shells).
     - Se usa junto con `execve()` para ejecutar programas con redirección.
     
-    💡 **¿Quieres un ejemplo con archivos en vez de pipes?** 🚀
-    
 - **acess();**
     
     ### `access()`: Comprobación de Permisos en C
@@ -495,8 +492,6 @@ Voy a explicar paso a paso del proceso para hacer pipex proyecto de 42 con bonus
     - **Verifica si un archivo existe antes de abrirlo.**
     - **Confirma si un comando es ejecutable antes de usar `execve()`.**
     - **Evita errores como "command not found" en una shell personalizada.**
-    
-    💡 **¿Quieres que te muestre cómo buscar comandos en `$PATH` con `access()`?** 🚀
     
 
 ---
